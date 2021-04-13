@@ -1,0 +1,36 @@
+---
+title: "R Useful Functions"
+author: "Dr Chris McNeil"
+date: "13/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*** 
+# Collection of useful R syntax and methods
+
+## Introduction
+
+This document is intended to collect all the useful code snippets I have collected since I started using R and R studio.
+
+I intend to organise the snippets into sections.
+
+* data wrangling.
+* data restructuring
+* data manipulation (creating new variables)
+* statistical analysis – basic
+* statistical analysis - advanced
+* data visualisation
+
+ultimately, I want this to be a working document with examples to run. I will load the required libraries when they are needed
+
+## Data wrangling
+
+
+
+
+
+
