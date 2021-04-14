@@ -25,10 +25,43 @@ I intend to organise the snippets into sections.
 * statistical analysis - advanced
 * data visualisation
 
-ultimately, I want this to be a working document with examples to run. I will load the required libraries when they are needed
+ultimately, I want this to be a working document with examples to run. I will load the required libraries when they are needed.
+
+Initially I will use the mtcars example database
+
+## R basic functions:
+
+### manipulating the environment
+
+Remove  Items from environment:
+
+```{r}
+data("mtcars")
+data("band_instruments")
+data("band_instruments2") # Load example datasets
+```
+
+Remove items
+```{r}
+rm(list=ls()[! ls() %in% c("band_instruments","band_instruments2")]) # Everything except Band instruments
+rm(list=setdiff(ls(), "band_instruments")) # Everything except "bandinstruments"
+rm(list=ls()) # Remove everything
+```
+Reference:
+[Stackoverflow](https://stackoverflow.com/questions/6190051/how-can-i-remove-all-objects-but-one-from-the-workspace-in-r)
+
+***
 
 ## Data wrangling
 
+### Recode a text variable
+
+Tidyverse libraries are needed for the following examples.
+
+```{r message=FALSE}
+data("band_members")
+band_members <- band_members %>% mutate(name=recode(name, "Mick"= "m"))
+```
 
 
 
