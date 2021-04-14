@@ -2,7 +2,9 @@
 title: "R Useful Functions"
 author: "Dr Chris McNeil"
 date: "13/04/2021"
-output: html_document
+output:
+  html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -31,7 +33,7 @@ Initially I will use the mtcars example database
 
 ## R basic functions:
 
-### manipulating the environment
+### Manipulating the environment
 
 Remove  Items from environment:
 
@@ -54,15 +56,46 @@ Reference:
 
 ## Data wrangling
 
+```{r}
+library(knitr) # for better looking tables when knitted to html
+library(kableExtra) # for even better looking tables when knitted to html
+```
+Reference for table formatting
+[Kable Extra](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html)
+
 ### Recode a text variable
 
 Tidyverse libraries are needed for the following examples.
+kn
 
 ```{r message=FALSE}
+library(tidyverse)
 data("band_members")
+kable(head(band_members)) %>% kable_minimal(full_width = F)
 band_members <- band_members %>% mutate(name=recode(name, "Mick"= "m"))
+kable(head((band_members))) %>% kable_minimal(full_width = F)
+rm(list=ls()) # Remove everything
 ```
 
+### Bin variable based on The value ( e.g. Low/Medium/High)
+
+```{r}
+data(mtcars)
+mtcars <- mtcars %>% mutate(hp_cat=cut(hp, breaks=c(-Inf, 100, Inf), labels=c("low hp","high hp")))
+```
+
+### Perform a function that is conditional 
+
+```{r}
+mtcars <- mtcars %>% mutate(loghp=ifelse(cyl>4,log10(hp),NA)) # Nonsensical example, but log transformed all horse powers of cars with more than four cylinders
+```
+
+### Conditional Replacements
+
+Replace all 'NA's in a specified variable with 0.
+```{r}
+mtcars <- mtcars %>% mutate(loghp = coalesce(loghp, 0))
+```
 
 
 
