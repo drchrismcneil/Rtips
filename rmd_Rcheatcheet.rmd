@@ -52,6 +52,15 @@ rm(list=ls()) # Remove everything
 Reference:
 [Stackoverflow](https://stackoverflow.com/questions/6190051/how-can-i-remove-all-objects-but-one-from-the-workspace-in-r)
 
+Remove a package (library)
+
+```{r}
+#Unload a module: 
+library(clipr) #load
+detach(package:clipr) #unload
+```
+
+
 ***
 
 ## Data wrangling
@@ -66,7 +75,7 @@ Reference for table formatting
 ### Recode a text variable
 
 Tidyverse libraries are needed for the following examples.
-kn
+
 
 ```{r message=FALSE}
 library(tidyverse)
@@ -109,8 +118,6 @@ mtcars <- mtcars %>%filter(complete.cases(.)) # no missing values found
 ```
 
 
-
-
 ### Delete specified columns
 
 ```{r}
@@ -121,6 +128,7 @@ rm(list=setdiff(ls(), "mtcars")) # clean environment
 ```
 
 ### Find duplicate rows (e.g. duplicated participant datasets)
+
 ```{r}
 n_occur1 <- data.frame(table(mtcars$mpg)) # specify which variable to check for duplication
 n_occur1[n_occur1$Freq > 1,]
@@ -137,7 +145,16 @@ mtcars3<-mtcars %>% filter(!(cyl==8 & hp==215)) # & is the 'and' operator
 
 ```
 
+
+### Use if else to calculate based on values
+
+```{r}
+mtcars <- mtcars %>% mutate(vs=ifelse(is.na(vs),(carb-am)/365.25,vs)) # no NA's so all values unchanged.
+```
+
+
 ### Merge data frames by adding individuals not variables
+
 
 ```{r}
 mtcarsmerged <- bind_rows(mtcars2, mtcars3)
@@ -145,6 +162,30 @@ rm(list=setdiff(ls(), "mtcars")) # clean environment
 ```
 
 [Reference](https://dplyr.tidyverse.org/reference/bind.html)
+
+
+## Statistical Methods
+
+### Linear Regression
+
+**Summarise and do Linear regression on multiple groups
+```{r}
+mtcars %>%  group_by(as.factor(gear)) %>% summarise(mean = mean(qsec), sd = sd(qsec))
+
+#What if you wanted to run the same linear regression model by the different group levels?  Instead of running #summary(lm(y~x)) for the number of levels you have, you can use the R package “broom” along with dplyr.
+
+library(broom)
+
+## run the same regression model for gears ##
+mtcars%>% group_by(gear) %>%
+  do(fitgear = glance(lm(hp~qsec, data = .))) %>% 
+  unnest(fitgear)
+```
+
+[Reference](https://stackoverflow.com/questions/22713325/fitting-several-regression-models-with-dplyr)
+
+
+
 
 
 
