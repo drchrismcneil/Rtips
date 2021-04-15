@@ -94,8 +94,57 @@ mtcars <- mtcars %>% mutate(loghp=ifelse(cyl>4,log10(hp),NA)) # Nonsensical exam
 
 Replace all 'NA's in a specified variable with 0.
 ```{r}
-mtcars <- mtcars %>% mutate(loghp = coalesce(loghp, 0))
+mtcars <- mtcars %>% mutate(loghp1 = coalesce(loghp, 0))
+
+#or
+
+mtcars <- mtcars %>% mutate(loghp = replace_na(loghp, "missing"))
 ```
+
+### Filter individuals with na's in a specified variable, or just retain complete cases
+
+```{r}
+mtcars <- mtcars %>% filter(!is.na(hp)) # no missing values found
+mtcars <- mtcars %>%filter(complete.cases(.)) # no missing values found
+```
+
+
+
+
+### Delete specified columns
+
+```{r}
+mtcars1 <- mtcars %>% select(-(drat)) # single column
+mtcars2 <- mtcars %>% select(-c(drat,hp,vs:gear)) # multiple columns
+
+rm(list=setdiff(ls(), "mtcars")) # clean environment
+```
+
+### Find duplicate rows (e.g. duplicated participant datasets)
+```{r}
+n_occur1 <- data.frame(table(mtcars$mpg)) # specify which variable to check for duplication
+n_occur1[n_occur1$Freq > 1,]
+```
+
+### Delete rows (individuals) based on value of a variable
+
+```{r}
+mtcars1<-mtcars %>% filter(!(cyl==6))
+mtcars2<-mtcars %>% filter(!(cyl==6 | hp==180)) # | is the 'or' operator
+mtcars3<-mtcars %>% filter(!(cyl==8 & hp==215)) # & is the 'and' operator
+
+# remove the ! To select the individuals with the specified conditions
+
+```
+
+### Merge data frames by adding individuals not variables
+
+```{r}
+mtcarsmerged <- bind_rows(mtcars2, mtcars3)
+rm(list=setdiff(ls(), "mtcars")) # clean environment
+```
+
+[Reference](https://dplyr.tidyverse.org/reference/bind.html)
 
 
 
