@@ -127,6 +127,14 @@ mtcars <- mtcars %>% mutate(hp_cat=cut(hp, breaks=c(-Inf, 100, Inf), labels=c("l
 mtcars <- mtcars %>% mutate(loghp=ifelse(cyl>4,log10(hp),NA)) # Nonsensical example, but log transformed all horse powers of cars with more than four cylinders
 ```
 
+### Calculate sum of values across rows 
+```{r}
+mtcars <- mtcars %>%  mutate(sum = select(., disp:drat) %>% apply(1, sum, na.rm=TRUE))
+#apply() takes Data frame or matrix as an input and gives output in vector (i.e.many columns to one list)
+# the '1' sets the dataframe to use (already selected here)
+
+```
+[Reference](https://stackoverflow.com/questions/28873057/sum-across-multiple-columns-with-dplyr)
 
 ### Standardize variable (mean of 0, SD of 1)
 ```{r stardardise variable}
@@ -295,6 +303,19 @@ kable(dat2 %>% summarise(across(x:z,funcs))) %>% kable_styling(full_width = FALS
 
 
 ```
+### Tables, Option 2
+```{r}
+
+df.sum <- mtcars %>%  select(mpg,cyl,hp) %>% summarise(across(everything(),list(mean=mean,sd=sd)))# make sure brackets are correct
+
+df.sum
+
+df.longer <- df.sum%>% pivot_longer(col=everything(),  names_to = c("Attribute",".value"),
+  names_sep = "_"
+)
+df.longer
+```
+
 
 
 
